@@ -13,8 +13,21 @@ import java.util.List;
 import fr.isen.java2.db.entities.Genre;
 import fr.isen.java2.db.entities.Movie;
 
+/**
+ * <p>
+ * This class provides JDBC-based operations for the {@code movie} SQL table.
+ * Movie rows are retrieved together with their associated {@link Genre} using
+ * SQL JOIN queries. Connections are obtained through {@link DataSourceFactory}.
+ * </p>
+ */
 public class MovieDao {
 
+	/**
+	 * Retrieves all movies from the database, including their associated genre.
+	 *
+	 * @return a list containing all {@link Movie} rows joined with their {@link Genre}
+	 * @throws RuntimeException if a database access error occurs
+	 */
 	public List<Movie> listMovies() {
 		String sql = "SELECT * FROM movie JOIN genre ON movie.genre_id = genre.idgenre";
 		List<Movie> movies = new ArrayList<>();
@@ -51,6 +64,13 @@ public class MovieDao {
 		}
 	}
 
+	/**
+	 * Retrieves all movies that belong to a specific genre (by genre name).
+	 *
+	 * @param genreName the genre name used to filter movies
+	 * @return a list of {@link Movie} objects whose {@link Genre} name matches {@code genreName}
+	 * @throws RuntimeException if a database access error occurs
+	 */
 	public List<Movie> listMoviesByGenre(String genreName) {
 		String sql = "SELECT * FROM movie JOIN genre ON movie.genre_id = genre.idgenre WHERE genre.name = ?";
 		List<Movie> movies = new ArrayList<>();
@@ -90,6 +110,14 @@ public class MovieDao {
 		}
 	}
 
+	/**
+	 * Inserts a new movie into the database and returns a {@link Movie} object
+	 * containing the generated database id.
+	 *
+	 * @param movie the {@link Movie} to insert (without an id)
+	 * @return a new {@link Movie} instance containing the generated id
+	 * @throws RuntimeException if a database access error occurs or if no generated id is returned
+	 */
 	public Movie addMovie(Movie movie) {
 		String sql = "INSERT INTO movie(title,release_date,genre_id,duration,director,summary) VALUES(?,?,?,?,?,?)";
 

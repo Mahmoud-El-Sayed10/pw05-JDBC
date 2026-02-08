@@ -11,8 +11,20 @@ import java.util.Optional;
 
 import fr.isen.java2.db.entities.Genre;
 
+/**
+ * <p>
+ * This class provides JDBC-based operations for the {@code genre} SQL table.
+ * Connections are obtained through {@link DataSourceFactory}.
+ * </p>
+ */
 public class GenreDao {
 
+	/**
+	 * Retrieves all genres from the database.
+	 *
+	 * @return a list containing all {@link Genre} rows from the {@code genre} table
+	 * @throws RuntimeException if a database access error occurs
+	 */
 	public List<Genre> listGenres() {
 		String sql = "SELECT * FROM genre";
 		List<Genre> genres = new ArrayList<>();
@@ -33,6 +45,14 @@ public class GenreDao {
 		}
 	}
 
+	/**
+	 * Retrieves a genre by its name.
+	 *
+	 * @param name the genre name to look up
+	 * @return an {@link Optional} containing the matching {@link Genre} if found,
+	 *         otherwise {@link Optional#empty()}
+	 * @throws RuntimeException if a database access error occurs
+	 */
 	public Optional<Genre> getGenre(String name) {
 		String sql = "SELECT * FROM genre WHERE name = ?";
 
@@ -55,6 +75,12 @@ public class GenreDao {
 		}
 	}
 
+	/**
+	 * Inserts a new genre into the database.
+	 *
+	 * @param name the name of the genre to insert
+	 * @throws RuntimeException if a database access error occurs
+	 */
 	public void addGenre(String name) {
 		String sql = "INSERT INTO genre(name) VALUES(?)";
 
